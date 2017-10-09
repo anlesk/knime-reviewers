@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import Search from '../../components/Search';
 
 import {
-  loadReviewersEpicAC,
-  getReviewers,
-} from '../../redux/ducks/reviewers';
+  loadArticlesEpicAC,
+  getArticles,
+} from '../../redux/ducks/articles';
 
 const SearchContainer = props => (
   <Search
-    reviewers={props.reviewers}
-    onSelect={props.loadReviewersEpicAC}
+    articles={props.articles}
+    onSelect={props.loadArticlesEpicAC}
   />
 );
 
 export default connect((state) => ({
-  reviewers: getReviewers(state),
+  articles: getArticles(state),
 }), {
-  loadReviewersEpicAC,
+  loadArticlesEpicAC,
 })(SearchContainer);

@@ -7,21 +7,29 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import Header from "../Header";
 
 import './style.css';
+import { Col, Grid, Row } from 'react-bootstrap';
 
 
 const App = (props) => (
   <div className="App">
     <Header />
 
-    <p className="App-intro">
-      To get started, edit <code>src/App.js</code> and save to reload.
-    </p>
+    <section className='App-container'>
+      <Grid>
+        <Row>
+          <Col lgOffset={2} lg={8}>
 
-    <Switch>
-      <Route exact path='/' component={SearchPage} />
-      <Route path='/about' component={AboutPage} />
-      <Route path='*' component={NotFoundPage} />
-    </Switch>
+            <Switch>
+              <Route exact path='/' component={SearchPage} />
+              <Route path='/about' component={AboutPage} />
+              <Route path='*' component={NotFoundPage} />
+            </Switch>
+
+          </Col>
+          <Col lg={2} />
+        </Row>
+      </Grid>
+    </section>
   </div>
 );
 

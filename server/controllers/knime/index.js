@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const runKnime = require('../../services/knime');
 
-router.get('/reviewers', function (req, res) {
-  const { reviewer, journal } = req.query;
+router.get('/articles', function (req, res) {
+  const { firstName, lastName } = req.query;
 
-  res.send([`${journal}/${reviewer}`]);
+  runKnime();
+
+  res.send([`${firstName}/${lastName}`]);
 });
 
 module.exports = router;

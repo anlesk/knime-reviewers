@@ -1,80 +1,93 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 import './style.css'
+import SearchResults from '../SearchResults/index';
+
+
+const DEBOUNCE_DELAY = 300;
 
 class Search extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      reviewer: '',
-      journal: '',
+      firstName: '',
+      lastName: '',
     };
   }
 
   handleSelect = () => {
-    const { reviewer, journal } = this.state;
-    this.props.onSelect({ reviewer, journal });
+    const { firstName, lastName } = this.state;
+    this.props.onSelect({ firstName, lastName });
   };
 
   handleInputChange = input => ({ target: { value } }) => this.setState({ [input]: value });
+  debouncedSelectionHandler = input => debounce(this.handleInputChange(input), DEBOUNCE_DELAY, { leading: true });
 
   render() {
-    const { reviewers } = this.props;
+    const { articles } = this.props;
+    const { firstName, lastName } = this.state;
 
     console.log('RENDER', this.props);
 
     return (
-      <section>
-        <div>
-          <label
-            htmlFor='reviewer'
-          >
-            Reviewer:
-          </label>
-          <input
-            id='reviewer'
-            onChange={this.handleInputChange('reviewer')}
-          />
-        </div>
+      <div>
+        <Form horizontal>
+          <FormGroup controlId="firstNameControl">
+            <Col lg={2}>
+              <ControlLabel>First Name</ControlLabel>
+            </Col>
+            <Col lg={6}>
+              <FormControl
+                type="text"
+                value={firstName}
+                placeholder="Enter first name"
+                onChange={this.debouncedSelectionHandler('firstName')}
+              />
+            </Col>
+          </FormGroup>
 
-        <div>
-          <label
-            htmlFor='journal'
-          >
-            Journal:
-          </label>
-          <input
-            id='journal'
-            onChange={this.handleInputChange('journal')}
-          />
-        </div>
+          <FormGroup controlId="lastNameControl">
+            <Col lg={2}>
+              <ControlLabel>Last Name</ControlLabel>
+            </Col>
+            <Col lg={6}>
+              <FormControl
+                type="text"
+                value={lastName}
+                placeholder="Enter last name"
+                onChange={this.debouncedSelectionHandler('lastName')}
+              />
+            </Col>
+          </FormGroup>
 
-        <div>
-          <button
-            id={'findReviewers'}
-            onClick={this.handleSelect}
-          >
-            Find reviewers
-          </button>
-        </div>
+          <Col lgOffset={2} lg={10}>
+            <Button
+              onClick={this.handleSelect}
+            >
+              Find Articles
+            </Button>
+          </Col>
+        </Form>
 
-        <div>
-          {reviewers.map(reviewer => reviewer)}
-        </div>
-      </section>
+        <SearchResults
+          results={articles}
+        />
+      </div>
     );
   }
 }
 
 Search.propTypes = {
-  reviewers: PropTypes.arrayOf(PropTypes.string),
+  articles: PropTypes.arrayOf(PropTypes.string),
   onSelect: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
-  reviewers: [],
+  articles: [],
 };
 
 export default Search;

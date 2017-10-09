@@ -5,3 +5,7 @@
   text-align: center;
   font-size: large;
 }
+
+.App-container {
+    margin: 80px;
+}

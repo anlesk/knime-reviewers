@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
 import logging from '../redux/ducks/logging';
-import reviewers from '../redux/ducks/reviewers';
+import articles from '../redux/ducks/articles';
 
 const rootReducer = combineReducers({
   logging,
 
-  reviewers,
+  articles,
 });
 
 export default rootReducer;

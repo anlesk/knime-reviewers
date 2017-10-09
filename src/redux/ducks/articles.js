@@ -1,19 +1,19 @@
 import { SUCCESS, START, FAIL } from '../utils/constants';
 
 
-export const LOAD_REVIEWERS = 'LOAD_REVIEWERS';
+export const LOAD_ARTICLES = 'LOAD_ARTICLES';
 
 const initialState = {
-  reviewers: [],
+  articles: [],
 };
 
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action;
   switch (type) {
-    case LOAD_REVIEWERS + SUCCESS: {
+    case LOAD_ARTICLES + SUCCESS: {
       return {
         ...state,
-        reviewers: payload,
+        articles: payload,
       }
     }
 
@@ -22,6 +22,6 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export const loadReviewersEpicAC = payload => ({ type: LOAD_REVIEWERS, payload });
+export const loadArticlesEpicAC = payload => ({ type: LOAD_ARTICLES, payload });
 
-export const getReviewers = state => state.reviewers.reviewers;
+export const getArticles = state => state.articles.articles;

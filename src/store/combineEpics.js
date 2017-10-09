@@ -1,9 +1,9 @@
 import { combineEpics } from 'redux-observable';
 
-import { loadReviewersEpic } from '../redux/epics/loadReviewersEpic';
+import { loadArticlesEpic } from '../redux/epics/loadArticlesEpic';
 
 const rootEpic = combineEpics(
-  loadReviewersEpic,
+  loadArticlesEpic,
 );
 
 export default rootEpic;
