@@ -3,7 +3,8 @@
 }
 
 .App-header {
-    background-color: rgba(105, 202, 72, 0.78);
+    background-color: rgba(117, 154, 202, 0.78);
     height: 90px;
-    padding: 5px;
+    padding: 10px;
+    margin: -20px;
 }

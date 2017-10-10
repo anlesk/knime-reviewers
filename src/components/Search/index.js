@@ -16,12 +16,14 @@ class Search extends PureComponent {
     this.state = {
       firstName: '',
       lastName: '',
+      isSubmitClickedOnce: false,
     };
   }
 
   handleSelect = () => {
     const { firstName, lastName } = this.state;
     this.props.onSelect({ firstName, lastName });
+    this.setState({ isSubmitClickedOnce: true });
   };
 
   handleInputChange = input => ({ target: { value } }) => this.setState({ [input]: value });
@@ -29,7 +31,7 @@ class Search extends PureComponent {
 
   render() {
     const { articles } = this.props;
-    const { firstName, lastName } = this.state;
+    const { firstName, lastName, isSubmitClickedOnce } = this.state;
 
     return (
       <section>
@@ -45,11 +47,14 @@ class Search extends PureComponent {
           </Col>
         </Row>
 
-        <Row>
-          <SearchResults
-            results={articles}
-          />
-        </Row>
+        {
+          isSubmitClickedOnce &&
+          <Row>
+            <SearchResults
+              results={articles}
+            />
+          </Row>
+        }
       </section>
     );
   }
