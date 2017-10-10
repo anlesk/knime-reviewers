@@ -17,16 +17,11 @@ const App = (props) => (
     <section className='App-container'>
       <Grid>
         <Row>
-          <Col lgOffset={2} lg={8}>
-
-            <Switch>
-              <Route exact path='/' component={SearchPage} />
-              <Route path='/about' component={AboutPage} />
-              <Route path='*' component={NotFoundPage} />
-            </Switch>
-
-          </Col>
-          <Col lg={2} />
+          <Switch>
+            <Route exact path='/' component={SearchPage} />
+            <Route path='/about' component={AboutPage} />
+            <Route path='*' component={NotFoundPage} />
+          </Switch>
         </Row>
       </Grid>
     </section>

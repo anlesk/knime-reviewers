@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Row } from 'react-bootstrap';
 
 import './style.css'
 import SearchResults from '../SearchResults/index';
@@ -35,47 +35,53 @@ class Search extends PureComponent {
 
     return (
       <div>
-        <Form horizontal>
-          <FormGroup controlId="firstNameControl">
-            <Col lg={2}>
-              <ControlLabel>First Name</ControlLabel>
-            </Col>
-            <Col lg={6}>
-              <FormControl
-                type="text"
-                value={firstName}
-                placeholder="Enter first name"
-                onChange={this.debouncedSelectionHandler('firstName')}
-              />
-            </Col>
-          </FormGroup>
+        <Row>
+          <Col lgoffset={3} lg={7}>
+            <Form horizontal>
+              <FormGroup controlId="firstNameControl">
+                <Col lg={2}>
+                  <ControlLabel>First Name</ControlLabel>
+                </Col>
+                <Col lg={5}>
+                  <FormControl
+                    type="text"
+                    value={firstName}
+                    placeholder="Enter first name"
+                    onChange={this.debouncedSelectionHandler('firstName')}
+                  />
+                </Col>
+              </FormGroup>
 
-          <FormGroup controlId="lastNameControl">
-            <Col lg={2}>
-              <ControlLabel>Last Name</ControlLabel>
-            </Col>
-            <Col lg={6}>
-              <FormControl
-                type="text"
-                value={lastName}
-                placeholder="Enter last name"
-                onChange={this.debouncedSelectionHandler('lastName')}
-              />
-            </Col>
-          </FormGroup>
+              <FormGroup controlId="lastNameControl">
+                <Col lg={2}>
+                  <ControlLabel>Last Name</ControlLabel>
+                </Col>
+                <Col lg={5}>
+                  <FormControl
+                    type="text"
+                    value={lastName}
+                    placeholder="Enter last name"
+                    onChange={this.debouncedSelectionHandler('lastName')}
+                  />
+                </Col>
+              </FormGroup>
 
-          <Col lgOffset={2} lg={10}>
-            <Button
-              onClick={this.handleSelect}
-            >
-              Find Articles
-            </Button>
+              <Col lgOffset={2} lg={10}>
+                <Button
+                  onClick={this.handleSelect}
+                >
+                  Find Articles
+                </Button>
+              </Col>
+            </Form>
           </Col>
-        </Form>
+        </Row>
 
-        <SearchResults
-          results={articles}
-        />
+        <Row>
+          <SearchResults
+            results={articles}
+          />
+        </Row>
       </div>
     );
   }
