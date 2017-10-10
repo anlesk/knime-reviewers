@@ -15,7 +15,8 @@ const getResultsTable = props => (
       <th>SORT_DATE</th>
       <th>ARTICLE_TITLE</th>
       <th>PUBLICATION_NAME</th>
-      <th>Corresponding authors</th>
+      <th>Authors #1</th>
+      <th>Authors #2</th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@ const getResultsTable = props => (
         <td>{result.ARTICLE_TITLE}</td>
         <td>{result.PUBLICATION_NAME}</td>
         <td>{result['Unique concatenate(AUTHOR_FULL_NAME)']}</td>
+        <td>{result['Unique concatenate(AUTHOR_FULL_NAME (#1))']}</td>
       </tr>
     ))}
     </tbody>

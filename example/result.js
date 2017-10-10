@@ -194,12 +194,6 @@ const results =  [ { ARTICLE_ID: '9183910',
     PUBLICATION_NAME: 'CURRENT OPINION IN BIOTECHNOLOGY',
     'Unique concatenate(AUTHOR_FULL_NAME)': 'Burdick, Jason A.',
     'Unique concatenate(AUTHOR_FULL_NAME (#1))': 'Highley, Christopher B.' },
-  { ARTICLE_ID: '21792264',
-    DOI: '10.1039/c6sm01395c',
-    SORT_DATE: '1/1/2016',
-    ARTICLE_TITLE: 'Evolution of hierarchical porous structures in supramolecular guest-host hydrogels',
-    PUBLICATION_NAME: 'SOFT MATTER',
-    'Unique concatenate(AUTHOR_FULL_NAME)': 'Burdick, Jason A.'}
     ];
 
 module.exports = results;
