@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const runKnime = require('../../services/knime');
-const results = require('../../../example/result');
 
-router.get('/articles', function (req, res) {
+router.get('/articles', async function (req, res) {
   const { firstName, lastName } = req.query;
 
-  // runKnime();
+  const results = await runKnime({ firstName, lastName });
 
   res.send(results);
 });
