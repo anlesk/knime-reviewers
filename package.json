@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "csv-parse": "^1.2.4",
     "express": "^4.16.1",
     "lodash": "^4.17.4",
     "morgan": "^1.9.0",
@@ -24,7 +25,8 @@
     "react-scripts": "1.0.14",
     "redux": "^3.7.2",
     "redux-observable": "^0.16.0",
-    "rxjs": "^5.4.3"
+    "rxjs": "^5.4.3",
+    "stream-transform": "^0.1.2"
   },
   "devDependencies": {
     "redux-devtools": "^3.4.0",

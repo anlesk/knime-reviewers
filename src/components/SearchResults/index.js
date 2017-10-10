@@ -10,9 +10,11 @@ const getResultsTable = props => (
     <thead>
     <tr>
       <th>#</th>
+      <th>ARTICLE_ID</th>
       <th>DOI</th>
-      <th>Journal title</th>
-      <th>Title</th>
+      <th>SORT_DATE</th>
+      <th>ARTICLE_TITLE</th>
+      <th>PUBLICATION_NAME</th>
       <th>Corresponding authors</th>
     </tr>
     </thead>
@@ -20,10 +22,12 @@ const getResultsTable = props => (
     {props.results.map((result, idx) => (
       <tr>
         <td>{idx+1}</td>
-        <td>{result}</td>
-        <td>{result}</td>
-        <td>{result}</td>
-        <td>{result}</td>
+        <td>{result.ARTICLE_ID}</td>
+        <td>{result.DOI}</td>
+        <td>{result.SORT_DATE}</td>
+        <td>{result.ARTICLE_TITLE}</td>
+        <td>{result.PUBLICATION_NAME}</td>
+        <td>{result['Unique concatenate(AUTHOR_FULL_NAME)']}</td>
       </tr>
     ))}
     </tbody>
