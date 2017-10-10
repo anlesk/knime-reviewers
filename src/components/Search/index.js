@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import './style.css'
-import SearchResults from '../SearchResults/index';
-
+import SearchResults from '../SearchResults';
+import SearchForm from '../SearchForm';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -31,49 +31,17 @@ class Search extends PureComponent {
     const { articles } = this.props;
     const { firstName, lastName } = this.state;
 
-    console.log('RENDER', this.props);
-
     return (
-      <div>
+      <section>
         <Row>
           <Col lgoffset={3} lg={7}>
-            <Form horizontal>
-              <FormGroup controlId="firstNameControl">
-                <Col lg={2}>
-                  <ControlLabel>First Name</ControlLabel>
-                </Col>
-                <Col lg={5}>
-                  <FormControl
-                    type="text"
-                    value={firstName}
-                    placeholder="Enter first name"
-                    onChange={this.debouncedSelectionHandler('firstName')}
-                  />
-                </Col>
-              </FormGroup>
-
-              <FormGroup controlId="lastNameControl">
-                <Col lg={2}>
-                  <ControlLabel>Last Name</ControlLabel>
-                </Col>
-                <Col lg={5}>
-                  <FormControl
-                    type="text"
-                    value={lastName}
-                    placeholder="Enter last name"
-                    onChange={this.debouncedSelectionHandler('lastName')}
-                  />
-                </Col>
-              </FormGroup>
-
-              <Col lgOffset={2} lg={10}>
-                <Button
-                  onClick={this.handleSelect}
-                >
-                  Find Articles
-                </Button>
-              </Col>
-            </Form>
+            <SearchForm
+              firstName={firstName}
+              lastName={lastName}
+              onFirstNameChange={this.debouncedSelectionHandler('firstName')}
+              onLastNameChange={this.debouncedSelectionHandler('lastName')}
+              onSubmit={this.handleSelect}
+            />
           </Col>
         </Row>
 
@@ -82,7 +50,7 @@ class Search extends PureComponent {
             results={articles}
           />
         </Row>
-      </div>
+      </section>
     );
   }
 }

@@ -7,7 +7,7 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import Header from "../Header";
 
 import './style.css';
-import { Col, Grid, Row } from 'react-bootstrap';
+import { Grid, Row } from 'react-bootstrap';
 
 
 const App = (props) => (
