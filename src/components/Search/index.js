@@ -1,13 +1,11 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
 import { Col, Row } from 'react-bootstrap';
 
 import './style.css'
 import SearchResults from '../SearchResults';
 import SearchForm from '../SearchForm';
 
-const DEBOUNCE_DELAY = 300;
 
 class Search extends PureComponent {
   constructor(props) {
@@ -27,7 +25,6 @@ class Search extends PureComponent {
   };
 
   handleInputChange = input => ({ target: { value } }) => this.setState({ [input]: value });
-  debouncedSelectionHandler = input => debounce(this.handleInputChange(input), DEBOUNCE_DELAY, { leading: true });
 
   render() {
     const { articles } = this.props;
@@ -40,8 +37,8 @@ class Search extends PureComponent {
             <SearchForm
               firstName={firstName}
               lastName={lastName}
-              onFirstNameChange={this.debouncedSelectionHandler('firstName')}
-              onLastNameChange={this.debouncedSelectionHandler('lastName')}
+              onFirstNameChange={this.handleInputChange('firstName')}
+              onLastNameChange={this.handleInputChange('lastName')}
               onSubmit={this.handleSelect}
             />
           </Col>

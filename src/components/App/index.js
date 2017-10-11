@@ -7,7 +7,7 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import Header from "../Header";
 
 import './style.css';
-import { Grid, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 
 const App = (props) => (
@@ -15,15 +15,13 @@ const App = (props) => (
     <Header />
 
     <section className='App-container'>
-      <Grid>
-        <Row>
-          <Switch>
-            <Route exact path='/' component={SearchPage} />
-            <Route path='/about' component={AboutPage} />
-            <Route path='*' component={NotFoundPage} />
-          </Switch>
-        </Row>
-      </Grid>
+      <Row>
+        <Switch>
+          <Route exact path='/' component={SearchPage} />
+          <Route path='/about' component={AboutPage} />
+          <Route path='*' component={NotFoundPage} />
+        </Switch>
+      </Row>
     </section>
   </div>
 );
