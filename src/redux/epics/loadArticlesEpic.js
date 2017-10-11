@@ -8,14 +8,12 @@ import { genericSuccessAC, genericStartAC, genericFailAC } from '../utils/generi
 import config from '../../config/config.common'
 
 
-const DEBOUNCE_TIME = 300;
 const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
 const loadArticlesFail = response => genericFailAC(LOAD_ARTICLES, response);
 const getArticles  = params => ajax.getJSON(`${config.baseUrl}/articles?${stringify(params)}`);
 
 export const loadArticlesEpic = action$ =>
   action$.ofType(LOAD_ARTICLES)
-    .debounceTime(DEBOUNCE_TIME)
     .switchMap(action =>
       concat$(
         of$(genericStartAC(LOAD_ARTICLES)),

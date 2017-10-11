@@ -40,12 +40,14 @@ const SearchResults = (props) => (
   <Panel
     header="Search results"
     className="SearchResults"
-    bsStyle={isEmpty(props.results) ? 'danger' : 'success'}
+    bsStyle={!isEmpty(props.error) ? 'danger' : 'success'}
   >
     {
-      isEmpty(props.results)
-      ? NoResultsFound
-      : getResultsTable(props)
+      props.error
+      ? props.error
+      : isEmpty(props.results)
+        ? NoResultsFound
+        : getResultsTable(props)
     }
 
   </Panel>

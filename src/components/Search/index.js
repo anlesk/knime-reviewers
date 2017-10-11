@@ -21,14 +21,22 @@ class Search extends PureComponent {
   handleSelect = () => {
     const { firstName, lastName } = this.state;
     this.props.onSelect({ firstName, lastName });
-    this.setState({ isSubmitClickedOnce: true });
   };
 
   handleInputChange = input => ({ target: { value } }) => this.setState({ [input]: value });
 
   render() {
-    const { articles } = this.props;
-    const { firstName, lastName, isSubmitClickedOnce } = this.state;
+    const {
+      articles: {
+        items,
+        _status: {
+          isLoading,
+          isShown,
+          error,
+        } = {},
+      },
+    } = this.props;
+    const { firstName, lastName } = this.state;
 
     return (
       <section>
@@ -45,12 +53,15 @@ class Search extends PureComponent {
         </Row>
 
         {
-          isSubmitClickedOnce &&
-          <Row>
-            <SearchResults
-              results={articles}
-            />
-          </Row>
+          isLoading
+            ? 'Loading'
+            : isShown &&
+              <Row>
+                <SearchResults
+                  results={items}
+                  error={error}
+                />
+              </Row>
         }
       </section>
     );
@@ -58,12 +69,25 @@ class Search extends PureComponent {
 }
 
 Search.propTypes = {
-  articles: PropTypes.arrayOf(PropTypes.string),
+  articles: PropTypes.shape({
+    items: PropTypes.arrayOf(PropTypes.string),
+    _status: PropTypes.shape({
+      isLoading: PropTypes.bool,
+      isShown: PropTypes.bool,
+      error: PropTypes.string,
+    }),
+  }).isRequired,
   onSelect: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
-  articles: [],
+  articles: {
+    items: [],
+    _status: {
+      isLoading: false,
+      isShown: false,
+    }
+  },
 };
 
 export default Search;
