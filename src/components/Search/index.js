@@ -85,7 +85,7 @@ Search.defaultProps = {
     items: [],
     _status: {
       isLoading: false,
-      isShown: false,
+      isShown: true,
     }
   },
 };
