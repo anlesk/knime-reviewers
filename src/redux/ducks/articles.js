@@ -21,6 +21,7 @@ export default function reducer(state = initialState, action = {}) {
         articles: {
           _status: {
             isLoading: true,
+            isShown: true,
           },
           items: payload
         },
@@ -33,6 +34,7 @@ export default function reducer(state = initialState, action = {}) {
         articles: {
           _status: {
             isLoading: false,
+            isShown: true,
             error: payload.msg,
           },
         },
@@ -44,6 +46,9 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         articles: {
           items: payload,
+          _status: {
+            isShown: true,
+          }
         },
       }
     }
