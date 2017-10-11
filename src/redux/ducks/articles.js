@@ -23,7 +23,6 @@ export default function reducer(state = initialState, action = {}) {
             isLoading: true,
             isShown: true,
           },
-          items: payload
         },
       }
     }
@@ -48,7 +47,7 @@ export default function reducer(state = initialState, action = {}) {
           items: payload,
           _status: {
             isShown: true,
-          }
+          },
         },
       }
     }
