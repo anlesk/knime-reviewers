@@ -1,17 +1,19 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
-import { Col, ProgressBar, Row } from 'react-bootstrap';
+import { Col, Panel, ProgressBar, Row } from 'react-bootstrap';
 
 import './style.css'
 import SearchResults from '../SearchResults';
 import SearchForm from '../SearchForm';
 
 const LoadingProgress = (
-  <ProgressBar
-    active
-    now={100}
-    label={'Loading'}
-  />
+  <Panel>
+    <ProgressBar
+      active
+      now={100}
+      label={'Loading'}
+    />
+  </Panel>
 );
 
 class Search extends PureComponent {
