@@ -9,6 +9,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "child-process-promise": "^2.2.1",
     "classnames": "^2.2.5",
     "csv-parse": "^1.2.4",
     "express": "^4.16.1",
