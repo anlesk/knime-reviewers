@@ -8,7 +8,7 @@ const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
 const pathToWorkflowDir = 'C:\\Users\\Admin\\knime-workspace\\COI checker 1';
 
 const lock = () => {
-  if (isLocked) throw new KnimeException('Another job is in progress!', 423);
+  if (isLocked) throw new KnimeException('Sorry, another job is being processed. Please come back later!', 423);
 
   isLocked = true;
 };
@@ -18,8 +18,7 @@ const runKnimeJob = async ({ firstName, lastName }) => {
   lock();
   writeParametersToFile({ firstName, lastName });
 
-  // const { stdout, error } = await execFile('node', ['--version']);
-  const { stdout, error } = await spawn(pathToKnime, [
+  const promise = spawn(pathToKnime, [
     '-consoleLog',
     '-reset',
     '-nosave',
@@ -31,9 +30,10 @@ const runKnimeJob = async ({ firstName, lastName }) => {
     `-workflow.variable=lastName,${lastName},String`,
     `-workflow.variable=firstName,${firstName},String`
   ]);
+  const childProcess = promise.childProcess;
+  console.log('[spawn] childProcess.pid: ', childProcess.pid);
 
-  if (error) throw error;
-
+  await promise;
   const result = readCVSFile();
   unlock();
 

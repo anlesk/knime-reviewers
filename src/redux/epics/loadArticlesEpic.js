@@ -9,7 +9,7 @@ import config from '../../config/config.common'
 
 
 const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
-const loadArticlesFail = response => genericFailAC(LOAD_ARTICLES, response);
+const loadArticlesFail = error => of$(genericFailAC(LOAD_ARTICLES, error));
 const getArticles  = params => ajax.getJSON(`${config.baseUrl}/articles?${stringify(params)}`);
 
 export const loadArticlesEpic = action$ =>
@@ -19,5 +19,5 @@ export const loadArticlesEpic = action$ =>
         of$(genericStartAC(LOAD_ARTICLES)),
         getArticles(action.payload)
           .map(loadArticlesSuccess)
-          .catch(loadArticlesFail)),
-      );
+          .catch(loadArticlesFail)
+      ));

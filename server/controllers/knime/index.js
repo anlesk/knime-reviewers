@@ -10,9 +10,8 @@ router.get('/articles', async function (req, res) {
 
     res.send(results);
   } catch (e) {
-    console.log("error", e);
-
-    if (e.code === 423) res.sendStatus(423);
+    const { code, message } = e;
+    res.status(code).send({ message });
   }
 
 });
