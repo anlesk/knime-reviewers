@@ -28,16 +28,7 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case LOAD_ARTICLES + FAIL: {
-      const {
-        xhr: {
-          response: {
-            message,
-          } = {
-            message: 'Oops... Something goes wrong! We are sorry about that!'
-          }
-        },
-        // status,
-      } = payload;
+      const { message = 'Oops... Something goes wrong! We are sorry about that!' } = payload;
 
       return {
         ...state,
