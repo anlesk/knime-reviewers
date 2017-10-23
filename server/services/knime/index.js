@@ -1,24 +1,31 @@
-const spawn = require('child-process-promise').spawn;
+const { spawn } = require('child_process');
+const fs = require('fs');
 const readCVSFile = require('../../services/knime/fileReader');
-const writeParametersToFile = require('../../services/knime/fileWriter');
 const KnimeException = require('../../exceptions/knime');
+const { addProcess, clearHistory, deleteProcess, getStoredProcesses } = require('../process/processHistory');
+const { getProcess, resetProcess, setProcess, isProcessInProgress } = require('../process');
 
 let isLocked = false;
 const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
+const pathToProcessesDir = 'C:\\Users\\Admin\\KNIME\\results';
 const pathToWorkflowDir = 'C:\\Users\\Admin\\knime-workspace\\COI checker 1';
+const EXPIRE_TIME = 24 * 60 * 60 * 1000;
 
-const lock = () => {
-  if (isLocked) throw new KnimeException('Sorry, another job is being processed. Please come back later!', 423);
-
-  isLocked = true;
-};
 const unlock = () => isLocked = false;
+const removeProcess = key => {
+  fs.unlinkSync(`${pathToProcessesDir}/${key}`);
+  deleteProcess(key);
+};
+const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getStoredProcesses())
+  .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
+  .forEach(key => removeProcess(key));
 
 const runKnimeJob = async ({ firstName, lastName }) => {
-  lock();
-  writeParametersToFile({ firstName, lastName });
+  removeExpiredProcesses();
 
-  const promise = spawn(pathToKnime, [
+  if (isProcessInProgress) return getProcess();
+
+  const subprocess = spawn(pathToKnime, [
     '-consoleLog',
     '-reset',
     '-nosave',
@@ -30,10 +37,26 @@ const runKnimeJob = async ({ firstName, lastName }) => {
     `-workflow.variable=lastName,${lastName},String`,
     `-workflow.variable=firstName,${firstName},String`
   ]);
-  const childProcess = promise.childProcess;
-  console.log('[spawn] childProcess.pid: ', childProcess.pid);
 
-  await promise;
+  setProcess({
+    date: Date.now(),
+    pid: subprocess.pid,
+    firstName,
+    lastName,
+  });
+  console.log('[spawn] process: ', getProcess());
+
+  subprocess.on('close', (code) => {
+    if (code !== 0) {
+      console.log(`subprocess process exited with code ${code}`);
+    }
+
+    addProcess(getProcess());
+    resetProcess();
+  });
+
+
+
   const result = readCVSFile();
   unlock();
 
