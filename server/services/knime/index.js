@@ -5,13 +5,11 @@ const KnimeException = require('../../exceptions/knime');
 const { addProcess, clearHistory, deleteProcess, getStoredProcesses } = require('../process/processHistory');
 const { getProcess, resetProcess, setProcess, isProcessInProgress } = require('../process');
 
-let isLocked = false;
 const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
 const pathToProcessesDir = 'C:\\Users\\Admin\\KNIME\\results';
 const pathToWorkflowDir = 'C:\\Users\\Admin\\knime-workspace\\COI checker 1';
 const EXPIRE_TIME = 24 * 60 * 60 * 1000;
 
-const unlock = () => isLocked = false;
 const removeProcess = key => {
   fs.unlinkSync(`${pathToProcessesDir}/${key}`);
   deleteProcess(key);
@@ -20,10 +18,15 @@ const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getStor
   .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
   .forEach(key => removeProcess(key));
 
+const buildResponse = () => ({
+  process: getProcess(),
+  history: getStoredProcesses(),
+});
+
 const runKnimeJob = async ({ firstName, lastName }) => {
   removeExpiredProcesses();
 
-  if (isProcessInProgress) return getProcess();
+  if (isProcessInProgress) return buildResponse();
 
   const subprocess = spawn(pathToKnime, [
     '-consoleLog',
@@ -41,6 +44,7 @@ const runKnimeJob = async ({ firstName, lastName }) => {
   setProcess({
     date: Date.now(),
     pid: subprocess.pid,
+    persons: {},
     firstName,
     lastName,
   });
@@ -55,12 +59,7 @@ const runKnimeJob = async ({ firstName, lastName }) => {
     resetProcess();
   });
 
-
-
-  const result = readCVSFile();
-  unlock();
-
-  return result;
+  return buildResponse();
 };
 
 module.exports = runKnimeJob;
