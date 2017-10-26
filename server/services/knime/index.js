@@ -26,7 +26,7 @@ const buildResponse = () => ({
 const runKnimeJob = async ({ firstName, lastName }) => {
   removeExpiredProcesses();
 
-  if (isProcessInProgress) return buildResponse();
+  if (isProcessInProgress()) return buildResponse();
 
   const subprocess = spawn(pathToKnime, [
     '-consoleLog',
