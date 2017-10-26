@@ -2,8 +2,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const readCVSFile = require('../../services/knime/fileReader');
 const KnimeException = require('../../exceptions/knime');
-const { addProcess, clearHistory, deleteProcess, getStoredProcesses } = require('../process/processHistory');
-const { getProcess, resetProcess, setProcess, isProcessInProgress } = require('../process');
+const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess } = require('../process');
 
 const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
 const pathToProcessesDir = 'C:\\Users\\Admin\\KNIME\\results';
@@ -14,19 +13,14 @@ const removeProcess = key => {
   fs.unlinkSync(`${pathToProcessesDir}/${key}`);
   deleteProcess(key);
 };
-const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getStoredProcesses())
+const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getProcesses())
   .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
   .forEach(key => removeProcess(key));
 
-const buildResponse = () => ({
-  process: getProcess(),
-  history: getStoredProcesses(),
-});
+const buildResponse = () => getProcesses();
 
 const runKnimeJob = async ({ firstName, lastName }) => {
   removeExpiredProcesses();
-
-  if (isProcessInProgress()) return buildResponse();
 
   const subprocess = spawn(pathToKnime, [
     '-consoleLog',
@@ -41,25 +35,31 @@ const runKnimeJob = async ({ firstName, lastName }) => {
     `-workflow.variable=firstName,${firstName},String`
   ]);
 
-  setProcess({
+  const process = {
+    id: Date.now(),
     date: Date.now(),
     pid: subprocess.pid,
     persons: {},
     firstName,
     lastName,
-  });
-  console.log('[spawn] process: ', getProcess());
+  };
+
+  const processes = addProcess(process);
+
+  console.log(processes, getProcesses(), buildResponse());
 
   subprocess.on('close', (code) => {
     if (code !== 0) {
       console.log(`subprocess process exited with code ${code}`);
     }
 
-    addProcess(getProcess());
-    resetProcess();
+    completeProcess(process);
   });
 
   return buildResponse();
 };
 
-module.exports = runKnimeJob;
+module.exports = {
+  runKnimeJob,
+  getProcesses,
+};

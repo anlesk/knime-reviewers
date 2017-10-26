@@ -1,16 +1,23 @@
-const { isEmpty } = require('lodash');
+let processes = {};
 
-let currentProcess = {};
+const STATUS = {
+  COMPLETE: 'complete',
+  IN_PROGRESS: 'in progress',
+  FAILED: 'failed',
+};
 
-const setProcess = process => Object.assign(currentProcess, process);
-const getProcess = () => currentProcess;
-const resetProcess = () => currentProcess = {};
-const isProcessInProgress = () => !isEmpty(currentProcess);
-
+const addProcess = process => Object.assign(processes, { ...processes, [process.id]: { ...process, status: STATUS.IN_PROGRESS } });
+const deleteProcess = processKey => delete processes[processKey];
+const removeProcesses = () => processes = {};
+const getProcesses = () => processes;
+const updateProcess = process => Object.assign(processes, { ...processes, [process.id]: process });
+const completeProcess = process => Object.assign(processes, { ...processes, [process.id]: { ...processes[process.id], status: STATUS.COMPLETE } });
 
 module.exports = {
-  setProcess,
-  getProcess,
-  resetProcess,
-  isProcessInProgress,
+  addProcess,
+  deleteProcess,
+  getProcesses,
+  updateProcess,
+  removeProcesses,
+  completeProcess,
 };

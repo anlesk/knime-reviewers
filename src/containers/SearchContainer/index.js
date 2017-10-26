@@ -1,5 +1,6 @@
 import React  from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Search from '../../components/Search';
 
@@ -7,16 +8,54 @@ import {
   loadArticlesEpicAC,
   getArticles,
 } from '../../redux/ducks/articles';
+import {
+  loadProcessesEpicAC,
+  loadProcessEpicAC,
+  getProcesses,
+} from '../../redux/ducks/processes';
 
-const SearchContainer = props => (
-  <Search
-    articles={props.articles}
-    onSelect={props.loadArticlesEpicAC}
-  />
-);
+class SearchContainer extends React.PureComponent {
+  componentWillMount() {
+    this.props.loadProcessesEpicAC();
+  }
+
+  render() {
+    const {
+      articles,
+      processes,
+      loadArticlesEpicAC,
+      loadProcessEpicAC,
+    } = this.props;
+
+    return (
+      <Search
+        processes={processes}
+        articles={articles}
+        onSelect={loadArticlesEpicAC}
+        loadProcess={loadProcessEpicAC}
+      />
+    );
+  }
+}
+
+SearchContainer.propTypes = {
+  loadArticlesEpicAC: PropTypes.func.isRequired,
+  loadProcessesEpicAC: PropTypes.func.isRequired,
+  loadProcessEpicAC: PropTypes.func.isRequired,
+  articles: PropTypes.shape(),
+  processes: PropTypes.shape(),
+};
+
+SearchContainer.defaultProps = {
+  articles: {},
+  processes: {},
+};
 
 export default connect((state) => ({
   articles: getArticles(state),
+  processes: getProcesses(state),
 }), {
   loadArticlesEpicAC,
+  loadProcessesEpicAC,
+  loadProcessEpicAC,
 })(SearchContainer);
