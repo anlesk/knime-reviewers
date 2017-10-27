@@ -3,6 +3,8 @@ const fs = require('fs');
 const readCVSFile = require('../../services/knime/fileReader');
 const KnimeException = require('../../exceptions/knime');
 const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess } = require('../process');
+const readDir = require('../../services/knime/readDirectory');
+const STATUS = require('../../models/process/status');
 
 const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
 const pathToProcessesDir = 'C:\\Users\\Admin\\KNIME\\results';
@@ -17,9 +19,22 @@ const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getProc
   .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
   .forEach(key => removeProcess(key));
 
+const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), ...args }) => ({
+  id,
+  date,
+  pid: subprocess.pid,
+  persons: args,
+  ...args,
+});
+
+const registerExistingFiles = () => readDir()
+  .forEach(file => addProcess(buildProcess({ id: file, date: file, status: STATUS.COMPLETE })));
+
 const buildResponse = () => getProcesses();
 
-const runKnimeJob = async ({ firstName, lastName }) => {
+const runKnimeJob = async (args) => {
+  const { firstName, lastName } = args;
+
   removeExpiredProcesses();
 
   const subprocess = spawn(pathToKnime, [
@@ -35,14 +50,7 @@ const runKnimeJob = async ({ firstName, lastName }) => {
     `-workflow.variable=firstName,${firstName},String`
   ]);
 
-  const process = {
-    id: Date.now(),
-    date: Date.now(),
-    pid: subprocess.pid,
-    persons: {},
-    firstName,
-    lastName,
-  };
+  const process = buildProcess(subprocess, args);
 
   const processes = addProcess(process);
 
@@ -62,4 +70,5 @@ const runKnimeJob = async ({ firstName, lastName }) => {
 module.exports = {
   runKnimeJob,
   getProcesses,
+  registerExistingFiles,
 };

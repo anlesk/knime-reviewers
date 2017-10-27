@@ -3,7 +3,9 @@ const morgan = require('morgan');
 const path = require('path');
 
 const knime = require('./controllers/knime');
+const { registerExistingFiles } = require('./services/knime');
 
+registerExistingFiles();
 const app = express();
 
 // Setup logger

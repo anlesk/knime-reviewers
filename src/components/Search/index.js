@@ -63,16 +63,22 @@ class Search extends PureComponent {
         <Row>
           <ListGroup>
             {
-              Object.entries(processes).map(([key, value]) => (
-                <ListGroupItem
-                  header={key}
-                  disabled={value.status !== STATUS.COMPLETE}
-                  onClick={() => this.handleProcessSelect(key)}
-                  bsStyle={value.status === STATUS.IN_PROGRESS ? "danger" : "success"}
-                >
-                  {JSON.stringify(value)}
-                </ListGroupItem>
-              ))
+              Object.entries(processes).map(([key, value]) => {
+                const disabled = value.status !== STATUS.COMPLETE;
+                const bsStyle = value.status === STATUS.IN_PROGRESS ? "danger" : "success";
+                const handleSelect = () => this.handleProcessSelect(key);
+
+                return (
+                  <ListGroupItem
+                    header={key}
+                    disabled={disabled}
+                    onClick={!disabled && handleSelect}
+                    bsStyle={bsStyle}
+                  >
+                    {JSON.stringify(value)}
+                  </ListGroupItem>
+                )
+              })
             }
           </ListGroup>
         </Row>

@@ -1,12 +1,8 @@
+const STATUS = require('../../models/process/status');
+
 let processes = {};
 
-const STATUS = {
-  COMPLETE: 'complete',
-  IN_PROGRESS: 'in progress',
-  FAILED: 'failed',
-};
-
-const addProcess = process => Object.assign(processes, { ...processes, [process.id]: { ...process, status: STATUS.IN_PROGRESS } });
+const addProcess = process => Object.assign(processes, { ...processes, [process.id]: { status: STATUS.IN_PROGRESS, ...process } });
 const deleteProcess = processKey => delete processes[processKey];
 const removeProcesses = () => processes = {};
 const getProcesses = () => processes;
