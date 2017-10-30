@@ -1,10 +1,11 @@
 const parse = require('csv-parse/lib/sync');
 const fs = require('fs');
+const path = require('path');
 
-const FILEPATH = './example/result.csv';
+const DIR_PATH = './example/';
 
-const readCVSFile = () => {
-  const csvFileString = fs.readFileSync(FILEPATH).toString();
+const readCVSFile = ({ id }) => {
+  const csvFileString = fs.readFileSync(DIR_PATH + path.sep + id).toString();
   const result = parse(csvFileString, { columns: true });
 
   return result;

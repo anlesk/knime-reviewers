@@ -28,7 +28,7 @@ const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), ...
 });
 
 const registerExistingFiles = () => readDir()
-  .forEach(file => addProcess(buildProcess({ id: file, date: file, status: STATUS.COMPLETE })));
+  .forEach(({ name, date }) => addProcess(buildProcess({ id: name, date, status: STATUS.COMPLETE })));
 
 const buildResponse = () => getProcesses();
 
@@ -50,8 +50,7 @@ const runKnimeJob = async (args) => {
     `-workflow.variable=firstName,${firstName},String`
   ]);
 
-  const process = buildProcess(subprocess, args);
-
+  const process = buildProcess({ subprocess, ...args });
   const processes = addProcess(process);
 
   console.log(processes, getProcesses(), buildResponse());
