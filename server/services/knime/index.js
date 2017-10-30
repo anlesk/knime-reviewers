@@ -18,12 +18,11 @@ const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getProc
   .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
   .forEach(key => removeProcess(key));
 
-const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), ...args }) => ({
+const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), args }) => ({
   id,
   date,
   pid: subprocess.pid,
   persons: args,
-  ...args,
 });
 
 const registerExistingFiles = () => readDir()
@@ -31,8 +30,8 @@ const registerExistingFiles = () => readDir()
 
 const buildResponse = () => getProcesses();
 
-const runKnimeJob = async (args) => {
-  const { firstName, lastName } = args[0];
+const runKnimeJob = (args) => {
+  const { firstName, lastName, role } = args[0];
 
   removeExpiredProcesses();
 
@@ -52,7 +51,7 @@ const runKnimeJob = async (args) => {
     `-workflow.variable=firstName,${firstName},String`
   ]);
 
-  const process = buildProcess({ subprocess, id: (date + CSV_EXTENSION), date, ...args });
+  const process = buildProcess({ subprocess, id: (date + CSV_EXTENSION), date, args });
   const processes = addProcess(process);
 
   console.log(processes, getProcesses(), buildResponse());

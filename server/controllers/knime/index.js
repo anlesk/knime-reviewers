@@ -5,7 +5,7 @@ const readCVSFile = require('../../services/knime/fileReader');
 
 router.post('/articles', async function (req, res) {
   try {
-    const results = await runKnimeJob(req.body);
+    const results = runKnimeJob(req.body);
 
     res.send(results);
   } catch (e) {

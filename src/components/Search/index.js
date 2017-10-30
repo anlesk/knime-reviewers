@@ -27,7 +27,9 @@ class Search extends PureComponent {
     super(props);
 
     this.state = {
-      persons: [{}],
+      persons: [{
+        role: 'author',
+      }],
       firstName: '',
       lastName: '',
       isSubmitClickedOnce: false,

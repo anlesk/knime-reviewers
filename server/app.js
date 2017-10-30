@@ -1,12 +1,15 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const knime = require('./controllers/knime');
 const { registerExistingFiles } = require('./services/knime');
 
 registerExistingFiles();
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Setup logger
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));

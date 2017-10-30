@@ -11,6 +11,7 @@ import config from '../../config/config.common'
 export const loadArticlesStart = () => genericStartAC(LOAD_ARTICLES);
 export const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
 export const loadArticlesFail = ({ xhr: { response } }) => of$(genericFailAC(LOAD_ARTICLES, response));
+const loadProcessesSuccessPost = ({ response }) => loadProcessesSuccess(response);
 const getArticles = params => ajax.post(`${config.baseUrl}/articles`, params, { 'Content-Type': 'application/json' });
 
 export const loadArticlesEpic = action$ =>
@@ -19,6 +20,6 @@ export const loadArticlesEpic = action$ =>
       concat$(
         of$(loadArticlesStart()),
         getArticles(action.payload)
-          .map(loadProcessesSuccess)
+          .map(loadProcessesSuccessPost)
           .catch(loadArticlesFail)
       ));
