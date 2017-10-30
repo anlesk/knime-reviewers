@@ -36,7 +36,7 @@ class Search extends PureComponent {
 
   handleSelect = () => {
     const { persons } = this.state;
-    this.props.onSelect({ persons });
+    this.props.onSelect(persons);
   };
 
   handleAddMore = () => this.setState({ persons: [...this.state.persons, {}] });

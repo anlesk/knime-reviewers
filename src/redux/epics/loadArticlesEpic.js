@@ -11,7 +11,7 @@ import config from '../../config/config.common'
 export const loadArticlesStart = () => genericStartAC(LOAD_ARTICLES);
 export const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
 export const loadArticlesFail = ({ xhr: { response } }) => of$(genericFailAC(LOAD_ARTICLES, response));
-const getArticles = params => ajax.post(`${config.baseUrl}/articles`, params);
+const getArticles = params => ajax.post(`${config.baseUrl}/articles`, params, { 'Content-Type': 'application/json' });
 
 export const loadArticlesEpic = action$ =>
   action$.ofType(LOAD_ARTICLES)
