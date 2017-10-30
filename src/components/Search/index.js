@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
-import { Col, ListGroup, ListGroupItem, Panel, ProgressBar, Row } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem, Panel, ProgressBar, Row } from 'react-bootstrap';
 
 import './style.css'
 import SearchResults from '../SearchResults';
@@ -27,6 +27,7 @@ class Search extends PureComponent {
     super(props);
 
     this.state = {
+      persons: [{}],
       firstName: '',
       lastName: '',
       isSubmitClickedOnce: false,
@@ -34,11 +35,13 @@ class Search extends PureComponent {
   }
 
   handleSelect = () => {
-    const { firstName, lastName } = this.state;
-    this.props.onSelect({ firstName, lastName });
+    const { persons } = this.state;
+    this.props.onSelect({ persons });
   };
 
-  handleInputChange = input => ({ target: { value } }) => this.setState({ [input]: value });
+  handleAddMore = () => this.setState({ persons: [...this.state.persons, {}] });
+
+  handleFormChange = persons => this.setState({ persons });
 
   handleProcessSelect = id => this.props.loadProcess(id);
 
@@ -56,7 +59,7 @@ class Search extends PureComponent {
         processes,
       },
     } = this.props;
-    const { firstName, lastName } = this.state;
+    const { persons } = this.state;
 
     return (
       <section>
@@ -84,15 +87,22 @@ class Search extends PureComponent {
         </Row>
 
         <Row>
-          <Col lgoffset={3} lg={7}>
-            <SearchForm
-              firstName={firstName}
-              lastName={lastName}
-              onFirstNameChange={this.handleInputChange('firstName')}
-              onLastNameChange={this.handleInputChange('lastName')}
-              onSubmit={this.handleSelect}
-            />
-          </Col>
+          <SearchForm
+            persons={persons}
+            onChange={this.handleFormChange}
+          />
+
+          <Button
+            onClick={this.handleAddMore}
+          >
+            + Add More
+          </Button>
+
+          <Button
+            onClick={this.handleSelect}
+          >
+            Find Articles
+          </Button>
         </Row>
 
         <Row className='show-grid'>
