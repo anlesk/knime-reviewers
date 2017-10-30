@@ -1,7 +1,5 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
-const readCVSFile = require('../../services/knime/fileReader');
-const KnimeException = require('../../exceptions/knime');
 const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess } = require('../process');
 const readDir = require('../../services/knime/readDirectory');
 const STATUS = require('../../models/process/status');
@@ -10,6 +8,7 @@ const { pathToProcessesDir } = require('../../constants');
 const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
 const pathToWorkflowDir = 'C:\\Users\\Admin\\knime-workspace\\COI checker 1';
 const EXPIRE_TIME = 24 * 60 * 60 * 1000;
+const CSV_EXTENSION = '.csv';
 
 const removeProcess = key => {
   fs.unlinkSync(`${pathToProcessesDir}/${key}`);
@@ -53,7 +52,7 @@ const runKnimeJob = async (args) => {
     `-workflow.variable=firstName,${firstName},String`
   ]);
 
-  const process = buildProcess({ subprocess, id: date, date, ...args });
+  const process = buildProcess({ subprocess, id: (date + CSV_EXTENSION), date, ...args });
   const processes = addProcess(process);
 
   console.log(processes, getProcesses(), buildResponse());
