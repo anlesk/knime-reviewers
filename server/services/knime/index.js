@@ -32,7 +32,7 @@ const registerExistingFiles = () => readDir()
 const buildResponse = () => getProcesses();
 
 const runKnimeJob = async (args) => {
-  const { firstName, lastName } = args;
+  const { firstName, lastName } = args[0];
 
   removeExpiredProcesses();
 
