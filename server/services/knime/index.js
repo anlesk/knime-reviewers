@@ -5,9 +5,9 @@ const KnimeException = require('../../exceptions/knime');
 const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess } = require('../process');
 const readDir = require('../../services/knime/readDirectory');
 const STATUS = require('../../models/process/status');
+const { pathToProcessesDir } = require('../../constants');
 
 const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
-const pathToProcessesDir = 'C:\\Users\\Admin\\KNIME\\results';
 const pathToWorkflowDir = 'C:\\Users\\Admin\\knime-workspace\\COI checker 1';
 const EXPIRE_TIME = 24 * 60 * 60 * 1000;
 

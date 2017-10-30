@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-
-const DIR_PATH = './example/';
-const getBirthTime = name => fs.statSync(DIR_PATH + path.sep + name).birthtimeMs;
+const { pathToProcessesDir } = require('../../constants');
 
 const readDir = () => {
-  const filesInDir = fs.readdirSync(DIR_PATH)
+  const getBirthTime = (name) => fs.statSync(pathToProcessesDir + path.sep + name).birthtimeMs;
+
+  const filesInDir = fs.readdirSync(pathToProcessesDir)
     .map(name => ({
       name,
       date: getBirthTime(name),
