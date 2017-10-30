@@ -37,6 +37,7 @@ const runKnimeJob = async (args) => {
 
   removeExpiredProcesses();
 
+  const date = Date.now();
   const subprocess = spawn(pathToKnime, [
     '-consoleLog',
     '-reset',
@@ -46,11 +47,13 @@ const runKnimeJob = async (args) => {
     '-application',
     'org.knime.product.KNIME_BATCH_APPLICATION',
     `-workflowDir=${pathToWorkflowDir}`,
+    `-workflow.variable=fileName,${date},String`,
+    `-workflow.variable=outputDir,${pathToProcessesDir},String`,
     `-workflow.variable=lastName,${lastName},String`,
     `-workflow.variable=firstName,${firstName},String`
   ]);
 
-  const process = buildProcess({ subprocess, ...args });
+  const process = buildProcess({ subprocess, id: date, date, ...args });
   const processes = addProcess(process);
 
   console.log(processes, getProcesses(), buildResponse());
