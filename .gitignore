@@ -10,6 +10,9 @@
 /build
 
 # misc
+.idea
+.vs
+*.iml
 .DS_Store
 .env.local
 .env.development.local
