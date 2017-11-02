@@ -29,8 +29,7 @@ const renderResults = props => (
         <th>SORT_DATE</th>
         <th>ARTICLE_TITLE</th>
         <th>PUBLICATION_NAME</th>
-        <th>Authors #1</th>
-        <th>Authors #2</th>
+        <th>Authors</th>
       </tr>
       </thead>
       <tbody>
@@ -42,8 +41,7 @@ const renderResults = props => (
           <td>{result.SORT_DATE}</td>
           <td>{result.ARTICLE_TITLE}</td>
           <td>{result.PUBLICATION_NAME}</td>
-          <td>{result['Unique concatenate(AUTHOR_FULL_NAME)']}</td>
-          <td>{result['Unique concatenate(AUTHOR_FULL_NAME (#1))']}</td>
+          <td>{result.AUTHORS}</td>
         </tr>
       ))}
       </tbody>

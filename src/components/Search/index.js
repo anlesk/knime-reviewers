@@ -69,9 +69,9 @@ class Search extends PureComponent {
         <Row>
           <ListGroup>
             {
-              Object.entries(processes).map(([key, value]) => {
-                const disabled = value.status !== STATUS.COMPLETE;
-                const bsStyle = value.status === STATUS.IN_PROGRESS ? "danger" : "success";
+              Object.entries(processes).map(([key, { status, persons }]) => {
+                const disabled = status !== STATUS.COMPLETE;
+                const bsStyle = status === STATUS.IN_PROGRESS ? "danger" : "success";
                 const handleSelect = () => this.handleProcessSelect(key);
                 const keyWithoutExtension = Number(key.substring(0, key.length - 4));
                 const date = moment(keyWithoutExtension).format("LLL");
@@ -83,7 +83,7 @@ class Search extends PureComponent {
                     onClick={!disabled && handleSelect}
                     bsStyle={bsStyle}
                   >
-                    {JSON.stringify(value)}
+                    {JSON.stringify(persons)}
                   </ListGroupItem>
                 )
               })
