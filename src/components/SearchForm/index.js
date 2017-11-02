@@ -5,6 +5,8 @@ import SearchFormItem from '../SearchFormItem';
 class SearchForm extends PureComponent {
   handleItemChange = idx => newItem => this.props.onChange(this.props.persons.map((item, index) => index === idx ? newItem : item));
 
+  handleRemove = idx => () => this.props.onChange(this.props.persons.filter((p, i) => i !== idx));
+
   render() {
     const {
       persons,
@@ -14,6 +16,7 @@ class SearchForm extends PureComponent {
       <SearchFormItem
         item={person}
         onChange={this.handleItemChange(idx)}
+        onRemove={this.handleRemove(idx)}
       />
     ));
   }

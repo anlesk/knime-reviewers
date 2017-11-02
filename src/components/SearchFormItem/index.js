@@ -1,5 +1,5 @@
 import React from 'react';
-import { ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 import SearchFormRoleSelect from '../SearchFormRoleSelect';
 
 class SearchFormItem extends React.PureComponent {
@@ -12,6 +12,7 @@ class SearchFormItem extends React.PureComponent {
         firstName,
         role,
       },
+      onRemove,
     } = this.props;
 
     return (
@@ -40,6 +41,13 @@ class SearchFormItem extends React.PureComponent {
           role={role}
           onSelect={this.handleChange('role')}
         />
+        {' '}
+        <Button
+          onClick={onRemove}
+          bsStyle={'danger'}
+        >
+          -
+        </Button>
       </Form>
     );
   }

@@ -1,6 +1,7 @@
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { of as of$ } from 'rxjs/observable/of'
 import { concat as concat$ } from 'rxjs/observable/concat'
+import { isEmpty } from 'lodash';
 
 import { LOAD_ARTICLES } from "../ducks/articles";
 import { loadProcessesSuccess } from './loadProcessesEpic';
@@ -12,7 +13,8 @@ export const loadArticlesStart = () => genericStartAC(LOAD_ARTICLES);
 export const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
 export const loadArticlesFail = ({ xhr: { response } }) => of$(genericFailAC(LOAD_ARTICLES, response));
 const loadProcessesSuccessPost = ({ response }) => loadProcessesSuccess(response);
-const getArticles = params => ajax.post(`${config.baseUrl}/articles`, params, { 'Content-Type': 'application/json' });
+const filterEmpty = params => params.filter(p => !isEmpty(p));
+const getArticles = params => ajax.post(`${config.baseUrl}/articles`, filterEmpty(params), { 'Content-Type': 'application/json' });
 
 export const loadArticlesEpic = action$ =>
   action$.ofType(LOAD_ARTICLES)

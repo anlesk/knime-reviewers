@@ -31,8 +31,6 @@ class Search extends PureComponent {
       persons: [{
         role: 'author',
       }],
-      firstName: '',
-      lastName: '',
       isSubmitClickedOnce: false,
     };
   }
@@ -42,7 +40,7 @@ class Search extends PureComponent {
     this.props.onSelect(persons);
   };
 
-  handleAddMore = () => this.setState({ persons: [...this.state.persons, {}] });
+  handleAddMore = () => this.setState({ persons: [ ...this.state.persons, { role: 'author' } ] });
 
   handleFormChange = persons => this.setState({ persons });
 
@@ -100,7 +98,7 @@ class Search extends PureComponent {
           <Button
             onClick={this.handleAddMore}
           >
-            + Add More
+            + Add
           </Button>
 
           <Button
