@@ -69,6 +69,8 @@ const runKnimeJob = (persons = []) => {
   const processes = addProcess(process);
 
   subprocess.on('close', code => code === 0 ? completeProcess(process) : failProcess(process));
+  subprocess.on('exit', code => code === 0 ? completeProcess(process) : failProcess(process));
+  subprocess.on('error', err => failProcess(process));
 
   return buildResponse();
 };
