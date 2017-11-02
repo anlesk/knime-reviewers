@@ -8,6 +8,7 @@ const removeProcesses = () => processes = {};
 const getProcesses = () => processes;
 const updateProcess = process => Object.assign(processes, { ...processes, [process.id]: process });
 const completeProcess = process => Object.assign(processes, { ...processes, [process.id]: { ...processes[process.id], status: STATUS.COMPLETE } });
+const failProcess = process => Object.assign(processes, { ...processes, [process.id]: { ...processes[process.id], status: STATUS.FAILED } });
 
 module.exports = {
   addProcess,
@@ -16,4 +17,5 @@ module.exports = {
   updateProcess,
   removeProcesses,
   completeProcess,
+  failProcess,
 };

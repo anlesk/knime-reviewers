@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
-const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess } = require('../process');
+const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess, failProcess, updateProcess } = require('../process');
 const readDir = require('../../services/knime/readDirectory');
 const STATUS = require('../../models/process/status');
 const { pathToProcessesDir } = require('../../constants');
@@ -68,13 +68,7 @@ const runKnimeJob = (persons = []) => {
   const process = buildProcess({ subprocess, id: (date + CSV_EXTENSION), date, persons });
   const processes = addProcess(process);
 
-  subprocess.on('close', (code) => {
-    if (code !== 0) {
-      console.log(`subprocess process exited with code ${code}`);
-    }
-
-    completeProcess(process);
-  });
+  subprocess.on('close', code => code === 0 ? completeProcess(process) : failProcess(process));
 
   return buildResponse();
 };
