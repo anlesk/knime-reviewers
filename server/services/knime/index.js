@@ -11,18 +11,25 @@ const EXPIRE_TIME = 24 * 60 * 60 * 1000;
 const CSV_EXTENSION = '.csv';
 
 const removeProcess = key => {
+  console.log('removing', `${pathToProcessesDir}/${key}`);
   fs.unlinkSync(`${pathToProcessesDir}/${key}`);
   deleteProcess(key);
 };
-const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getProcesses())
-  .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
-  .forEach(key => removeProcess(key));
+const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.entries(getProcesses())
+  .filter(([key, { date }]) => (Math.abs(new Date(date) - Date.now()) > expireTime))
+  .forEach(([key]) => removeProcess(key));
 
-const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), persons }) => ({
+const cleanAndGetProcesses = () => {
+  removeExpiredProcesses();
+  return getProcesses();
+};
+
+const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), persons, ...args }) => ({
   id,
   date,
   pid: subprocess.pid,
   persons,
+  ...args,
 });
 
 const registerExistingFiles = () => readDir()
@@ -41,8 +48,6 @@ const runKnimeJob = (persons = []) => {
   const referees = persons.filter(p => p.role === 'referee')
     .map(concatFirstAndLastName)
     .reduce(concatToMemo, '');
-
-  removeExpiredProcesses();
 
   const date = Date.now();
   const subprocess = spawn(pathToKnime, [
@@ -76,6 +81,6 @@ const runKnimeJob = (persons = []) => {
 
 module.exports = {
   runKnimeJob,
-  getProcesses,
+  getProcesses: cleanAndGetProcesses,
   registerExistingFiles,
 };

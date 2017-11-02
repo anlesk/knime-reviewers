@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
 import { Button, ListGroup, ListGroupItem, Panel, ProgressBar, Row } from 'react-bootstrap';
+import moment from 'moment';
 
 import './style.css'
 import SearchResults from '../SearchResults';
@@ -72,10 +73,12 @@ class Search extends PureComponent {
                 const disabled = value.status !== STATUS.COMPLETE;
                 const bsStyle = value.status === STATUS.IN_PROGRESS ? "danger" : "success";
                 const handleSelect = () => this.handleProcessSelect(key);
+                const keyWithoutExtension = Number(key.substring(0, key.length - 4));
+                const date = moment(keyWithoutExtension).format("LLL");
 
                 return (
                   <ListGroupItem
-                    header={key}
+                    header={date}
                     disabled={disabled}
                     onClick={!disabled && handleSelect}
                     bsStyle={bsStyle}
