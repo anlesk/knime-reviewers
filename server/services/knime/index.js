@@ -18,11 +18,11 @@ const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.keys(getProc
   .filter(key => (Math.abs(new Date(key) - Date.now()) > expireTime))
   .forEach(key => removeProcess(key));
 
-const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), args }) => ({
+const buildProcess = ({ subprocess = {}, id = Date.now(), date = Date.now(), persons }) => ({
   id,
   date,
   pid: subprocess.pid,
-  persons: args,
+  persons,
 });
 
 const registerExistingFiles = () => readDir()
@@ -30,8 +30,17 @@ const registerExistingFiles = () => readDir()
 
 const buildResponse = () => getProcesses();
 
-const runKnimeJob = (args) => {
-  const { firstName, lastName, role } = args[0];
+const concatFirstAndLastName = p => `'${p.lastName.toUpperCase()}, ${p.firstName.toUpperCase()}'`;
+const concatToMemo = (memo, name, idx) => memo.concat(idx > 0 ? ',' : '').concat(name);
+
+const runKnimeJob = (persons = []) => {
+  const authors = persons.filter(p => p.role === 'author')
+    .map(concatFirstAndLastName)
+    .reduce(concatToMemo, '');
+
+  const referees = persons.filter(p => p.role === 'referee')
+    .map(concatFirstAndLastName)
+    .reduce(concatToMemo, '');
 
   removeExpiredProcesses();
 
@@ -47,14 +56,12 @@ const runKnimeJob = (args) => {
     `-workflowDir=${pathToWorkflowDir}`,
     `-workflow.variable=fileName,${date},String`,
     `-workflow.variable=outputDir,${pathToProcessesDir},String`,
-    `-workflow.variable=lastName,${lastName},String`,
-    `-workflow.variable=firstName,${firstName},String`
+    `-workflow.variable=authors,"${authors}",String`,
+    `-workflow.variable=referees,"${referees}",String`
   ]);
 
-  const process = buildProcess({ subprocess, id: (date + CSV_EXTENSION), date, args });
+  const process = buildProcess({ subprocess, id: (date + CSV_EXTENSION), date, persons });
   const processes = addProcess(process);
-
-  console.log(processes, getProcesses(), buildResponse());
 
   subprocess.on('close', (code) => {
     if (code !== 0) {
