@@ -10,7 +10,7 @@ import {
 } from '../../redux/ducks/articles';
 import {
   loadProcessesEpicAC,
-  loadProcessEpicAC,
+  startProcessEpicAC,
   getProcesses,
 } from '../../redux/ducks/processes';
 
@@ -24,15 +24,15 @@ class SearchContainer extends React.PureComponent {
       articles,
       processes,
       loadArticlesEpicAC,
-      loadProcessEpicAC,
+      startProcessEpicAC,
     } = this.props;
 
     return (
       <Search
         processes={processes}
         articles={articles}
-        onSelect={loadArticlesEpicAC}
-        loadProcess={loadProcessEpicAC}
+        onSelect={startProcessEpicAC}
+        loadArticles={loadArticlesEpicAC}
       />
     );
   }
@@ -41,7 +41,7 @@ class SearchContainer extends React.PureComponent {
 SearchContainer.propTypes = {
   loadArticlesEpicAC: PropTypes.func.isRequired,
   loadProcessesEpicAC: PropTypes.func.isRequired,
-  loadProcessEpicAC: PropTypes.func.isRequired,
+  startProcessEpicAC: PropTypes.func.isRequired,
   articles: PropTypes.shape(),
   processes: PropTypes.shape(),
 };
@@ -57,5 +57,5 @@ export default connect((state) => ({
 }), {
   loadArticlesEpicAC,
   loadProcessesEpicAC,
-  loadProcessEpicAC,
+  startProcessEpicAC,
 })(SearchContainer);

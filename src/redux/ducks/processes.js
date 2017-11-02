@@ -1,7 +1,7 @@
 import { SUCCESS, START, FAIL } from '../utils/constants';
 
 export const LOAD_PROCESSES = 'LOAD_PROCESSES';
-export const LOAD_PROCESS = 'LOAD_PROCESS';
+export const START_PROCESS = 'START_PROCESS';
 
 const initialState = {
   processes: {},
@@ -52,6 +52,6 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export const loadProcessesEpicAC = () => ({ type: LOAD_PROCESSES });
-export const loadProcessEpicAC = id => ({ type: LOAD_PROCESS, payload: { id } });
+export const startProcessEpicAC = payload => ({ type: START_PROCESS, payload });
 
 export const getProcesses = state => state.processes;

@@ -1,20 +1,17 @@
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { of as of$ } from 'rxjs/observable/of'
 import { concat as concat$ } from 'rxjs/observable/concat'
-import { isEmpty } from 'lodash';
+import { stringify } from 'query-string';
 
 import { LOAD_ARTICLES } from "../ducks/articles";
-import { loadProcessesSuccess } from './loadProcessesEpic';
 import { genericSuccessAC, genericStartAC, genericFailAC } from '../utils/genericAC';
 import config from '../../config/config.common'
 
 
-export const loadArticlesStart = () => genericStartAC(LOAD_ARTICLES);
-export const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
-export const loadArticlesFail = ({ xhr: { response } }) => of$(genericFailAC(LOAD_ARTICLES, response));
-const loadProcessesSuccessPost = ({ response }) => loadProcessesSuccess(response);
-const filterEmpty = params => params.filter(p => !isEmpty(p));
-const getArticles = params => ajax.post(`${config.baseUrl}/articles`, filterEmpty(params), { 'Content-Type': 'application/json' });
+const loadArticlesStart = () => genericStartAC(LOAD_ARTICLES);
+const loadArticlesSuccess = response => genericSuccessAC(LOAD_ARTICLES, response);
+const loadArticlesFail = ({ xhr: { response } }) => of$(genericFailAC(LOAD_ARTICLES, response));
+const getArticles  = params => ajax.getJSON(`${config.baseUrl}/articles?${stringify(params)}`);
 
 export const loadArticlesEpic = action$ =>
   action$.ofType(LOAD_ARTICLES)
@@ -22,6 +19,6 @@ export const loadArticlesEpic = action$ =>
       concat$(
         of$(loadArticlesStart()),
         getArticles(action.payload)
-          .map(loadProcessesSuccessPost)
+          .map(loadArticlesSuccess)
           .catch(loadArticlesFail)
       ));

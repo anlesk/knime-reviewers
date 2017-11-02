@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from 'prop-types';
-import { Button, ListGroup, ListGroupItem, Panel, ProgressBar, Row } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem, Modal, Panel, ProgressBar, Row } from 'react-bootstrap';
 import moment from 'moment';
 
 import './style.css'
@@ -44,7 +44,7 @@ class Search extends PureComponent {
 
   handleFormChange = persons => this.setState({ persons });
 
-  handleProcessSelect = id => this.props.loadProcess(id);
+  handleProcessSelect = id => this.props.loadArticles(id);
 
   render() {
     const {
@@ -64,6 +64,8 @@ class Search extends PureComponent {
 
     return (
       <section>
+        <Modal show={isLoading} />
+
         <Row>
           <ListGroup>
             {
@@ -136,7 +138,7 @@ Search.propTypes = {
   }).isRequired,
   processes: PropTypes.shape().isRequired,
   onSelect: PropTypes.func.isRequired,
-  loadProcess: PropTypes.func.isRequired,
+  loadArticles: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {

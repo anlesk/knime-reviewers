@@ -59,6 +59,6 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export const loadArticlesEpicAC = payload => ({ type: LOAD_ARTICLES, payload });
+export const loadArticlesEpicAC = id => ({ type: LOAD_ARTICLES, payload: { id } });
 
 export const getArticles = state => state.articles.articles;

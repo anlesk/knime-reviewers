@@ -1,12 +1,12 @@
 import { combineEpics } from 'redux-observable';
 
 import { loadArticlesEpic } from '../redux/epics/loadArticlesEpic';
-import { loadProcessesEpic, loadProcessEpic } from '../redux/epics/loadProcessesEpic';
+import { loadProcessesEpic, startProcessEpic } from '../redux/epics/processesEpic';
 
 const rootEpic = combineEpics(
   loadArticlesEpic,
   loadProcessesEpic,
-  loadProcessEpic,
+  startProcessEpic,
 );
 
 export default rootEpic;

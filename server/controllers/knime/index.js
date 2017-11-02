@@ -3,7 +3,7 @@ const router = express.Router();
 const { runKnimeJob, getProcesses } = require('../../services/knime');
 const readCVSFile = require('../../services/knime/fileReader');
 
-router.post('/articles', async function (req, res) {
+router.post('/startProcess', async function (req, res) {
   try {
     const results = runKnimeJob(req.body);
 
@@ -14,7 +14,7 @@ router.post('/articles', async function (req, res) {
   }
 });
 
-router.get('/process', async function (req, res) {
+router.get('/processes', async function (req, res) {
   try {
     const results = getProcesses();
 
@@ -25,7 +25,7 @@ router.get('/process', async function (req, res) {
   }
 });
 
-router.get('/result', async function (req, res) {
+router.get('/articles', async function (req, res) {
   const { id } = req.query;
 
   try {
