@@ -28,9 +28,10 @@ class Search extends PureComponent {
     super(props);
 
     this.state = {
-      persons: [{
-        role: 'author',
-      }],
+      persons: [
+        { role: 'author' },
+        { role: 'referee' },
+      ],
       isSubmitClickedOnce: false,
     };
   }
@@ -61,6 +62,9 @@ class Search extends PureComponent {
       },
     } = this.props;
     const { persons } = this.state;
+    const isRefereeExists = persons.some(p => p.role === 'referee');
+    const isAuthorExists = persons.some(p => p.role === 'author');
+    const isFindArticleButtonDisabled = !isRefereeExists || !isAuthorExists;
 
     return (
       <section>
@@ -105,6 +109,7 @@ class Search extends PureComponent {
 
           <Button
             onClick={this.handleSelect}
+            disabled={isFindArticleButtonDisabled}
           >
             Find Articles
           </Button>
