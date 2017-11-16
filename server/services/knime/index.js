@@ -37,7 +37,7 @@ const registerExistingFiles = () => readDir()
 
 const buildResponse = () => getProcesses();
 
-const concatFirstAndLastName = p => `${p.lastName.toUpperCase()}, ${p.firstName.toUpperCase()}`;
+const concatFirstAndLastName = p => `${p.lastName.trim().toUpperCase()}, ${p.firstName.trim().toUpperCase()}`;
 const concatToMemo = (memo, name, idx) => memo.concat(idx > 0 ? ';' : '').concat(name);
 
 const runKnimeJob = (persons = []) => {

@@ -1,9 +1,14 @@
 import React from 'react';
 import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { isEmpty } from 'lodash';
 import SearchFormRoleSelect from '../SearchFormRoleSelect';
 
 class SearchFormItem extends React.PureComponent {
-  handleChange = prop => ({ target: { value } }) => this.props.onChange({ ...this.props.item, [prop]: value });
+  handleChange = prop => ({ target: { value = '' } }) => {
+    const trimmedValue = value.trim();
+    const result = isEmpty(trimmedValue) ? trimmedValue : value;
+    return this.props.onChange({ ...this.props.item, [prop]: result });
+  };
 
   render() {
     const {
