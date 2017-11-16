@@ -63,13 +63,18 @@ class Search extends PureComponent {
       },
     } = this.props;
     const { persons } = this.state;
-    const isRefereeExists = persons.some(({role, firstName, lastName}) =>
-      (role === 'referee') && !isEmpty(firstName) && !isEmpty(lastName)
-    );
-    const isAuthorExists = persons.some(({role, firstName, lastName}) =>
-      (role === 'author') && !isEmpty(firstName) && !isEmpty(lastName)
-    );
-    const isFindArticleButtonDisabled = !isRefereeExists || !isAuthorExists;
+
+    const flagObject = persons.reduce((memo, { role, firstName, lastName }) => {
+      memo.hasAuthors = memo.hasAuthors || (role === 'author');
+      memo.hasReferees = memo.hasReferees || (role === 'referee');
+      memo.noEmpty = memo.noEmpty && !isEmpty(firstName) && !isEmpty(lastName);
+
+      return memo;
+    }, { hasAuthors: false, hasReferees: false, noEmpty: true });
+
+
+    const isFindArticleButtonDisabled = Object.values(flagObject)
+      .some(flag => !flag);
 
     return (
       <section>
