@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const { pathToProcessesDir } = require('../../constants');
+
+const settings = require('../../settings');
 
 const readDir = () => {
-  const getBirthTime = (name) => fs.statSync(pathToProcessesDir + path.sep + name).birthtimeMs;
+  const pathToProcessesDir = settings.getItem('knimeResultsPath');
+  const getBirthTime = (name) => fs.statSync(`${pathToProcessesDir}${path.sep}${name}`).birthtimeMs;
 
   const filesInDir = fs.readdirSync(pathToProcessesDir)
     .map(name => ({

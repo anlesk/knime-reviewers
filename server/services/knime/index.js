@@ -1,18 +1,19 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
+const path = require('path');
+
 const { addProcess, removeProcesses, deleteProcess, getProcesses, completeProcess, failProcess, updateProcess } = require('../process');
 const readDir = require('../../services/knime/readDirectory');
 const STATUS = require('../../models/process/status');
-const { pathToProcessesDir } = require('../../constants');
+const settings = require('../../settings');
 
-const pathToKnime = 'C:\\Program Files\\KNIME\\knime.exe';
-const pathToWorkflowDir = 'C:\\Users\\Admin\\knime-workspace\\COI checker 1';
 const EXPIRE_TIME = 24 * 60 * 60 * 1000;
 const CSV_EXTENSION = '.csv';
 
 const removeProcess = key => {
-  console.log('removing', `${pathToProcessesDir}/${key}`);
-  fs.unlinkSync(`${pathToProcessesDir}/${key}`);
+  const pathToProcessesDir = settings.getItem('knimeResultsPath');
+  console.log('removing', `${pathToProcessesDir}${path.sep}${key}`);
+  fs.unlinkSync(`${pathToProcessesDir}${path.sep}${key}`);
   deleteProcess(key);
 };
 const removeExpiredProcesses = (expireTime = EXPIRE_TIME) => Object.entries(getProcesses())
@@ -50,6 +51,10 @@ const runKnimeJob = (persons = []) => {
     .reduce(concatToMemo, '');
 
   const date = Date.now();
+  const pathToKnime = settings.getItem('knimePath');
+  const pathToWorkflowDir = settings.getItem('knimeJobPath');
+  const pathToProcessesDir = settings.getItem('knimeResultsPath');
+
   const subprocess = spawn(pathToKnime, [
     '-consoleLog',
     '-reset',
