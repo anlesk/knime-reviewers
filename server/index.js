@@ -13,7 +13,7 @@ const defaultHost = 'localhost';
 const defaultPort = '9000';
 const defaultKnimePath = `C:${path.sep}Program Files${path.sep}KNIME${path.sep}knime.exe`;
 const defaultKnimeJobPath = `${os.homedir}${path.sep}knime-workspace${path.sep}COI checker 1`;
-const defaultKnimeResultsPath = `${os.homedir}${path.sep}KNIME${path.sep}results`;
+const defaultKnimeResultsPath = `${os.homedir}${path.sep}knime${path.sep}results`;
 
 const argv = yargs
   .command('npm run server', 'Run app')
