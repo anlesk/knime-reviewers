@@ -12,8 +12,8 @@ const debug = debugModule('app:server:main');
 const defaultHost = 'localhost';
 const defaultPort = '9000';
 const defaultKnimePath = `C:${path.sep}Program Files${path.sep}KNIME${path.sep}knime.exe`;
-const defaultKnimeJobPath = `${os.homedir}${path.sep}knime-workspace${path.sep}COI checker 1`;
-const defaultKnimeResultsPath = `${os.homedir}${path.sep}knime${path.sep}results`;
+const defaultKnimeJobPath = `${os.homedir}${path.sep}knime-workspace${path.sep}COI_checker`;
+const defaultKnimeResultsPath = `${os.homedir}${path.sep}knime${path.sep}results${path.sep}`;
 
 const argv = yargs
   .command('npm run server', 'Run app')
